@@ -72,7 +72,8 @@ app.post('/webhook', async (req, res) => {
 6️⃣ Bienestar Social
 7️⃣ Salud para Todos
 8️⃣ ¿Qué es la Alianza Despierta?
-9️⃣ ¿Cuál es la visión del plan?`;
+9️⃣ ¿Cuál es la visión del plan?
+🔟 Hablar con un representante`;
 
         const responses = {
             '1': "Alejandro Unzueta es un líder beniano reconocido por su trabajo social y su compromiso con la salud y el bienestar de las familias. Se hizo conocido por su apoyo directo a la población durante la pandemia del COVID-19, brindando asistencia médica, medicamentos y acompañamiento a miles de personas.\nSu visión es construir un Beni productivo, moderno, seguro y conectado, donde todas las comunidades tengan acceso a oportunidades, desarrollo y salud de calidad.",
@@ -83,7 +84,8 @@ app.post('/webhook', async (req, res) => {
             '6': "Este eje fortalece la calidad de vida de las familias:\n\nInfraestructura educativa moderna.\nCentros y espacios deportivos para jóvenes.\nRescate y promoción de la cultura beniana.\nProgramas para mujeres, niños, adultos mayores y personas con discapacidad.\nProyectos de seguridad ciudadana en todos los municipios.",
             '7': "Propone una transformación histórica del sistema de salud:\n\nNuevo Hospital de Tercer Nivel en Riberalta.\nModernización del Hospital Germán Busch en Trinidad.\nCentros de Salud Fluviales y el Barco Hospital para zonas alejadas.\nLaboratorio PCR para controlar dengue, malaria y otras enfermedades.\nTelemedicina y digitalización para un sistema moderno y accesible.",
             '8': "Es una alianza ciudadana departamental que plantea un nuevo modelo político: participativo, innovador y basado en la construcción de un Beni comunal, productivo y unido. Busca superar la política tradicional promoviendo gestión técnica, transparencia y participación de todos los sectores de la sociedad.",
-            '9': "La visión del plan es transformar el Beni en un departamento:\n\nProductivo\nModerno\nConectado\nAmbientalmente equilibrado\nCulturalmente fortalecido\nY con un sistema de salud de primer nivel\n\nUn Beni donde el desarrollo llegue a cada provincia, municipio y comunidad."
+            '9': "La visión del plan es transformar el Beni en un departamento:\n\nProductivo\nModerno\nConectado\nAmbientalmente equilibrado\nCulturalmente fortalecido\nY con un sistema de salud de primer nivel\n\nUn Beni donde el desarrollo llegue a cada provincia, municipio y comunidad.",
+            '10': "✅ Hemos recibido tu solicitud. Un representante del equipo se pondrá en contacto contigo a la brevedad para atenderte de manera personalizada. ¡Gracias por tu interés!"
         };
 
         // 2. Lógica del Chatbot
@@ -101,7 +103,7 @@ app.post('/webhook', async (req, res) => {
             } else if (responses[incomingText]) {
                 await sendMessage(remoteJid, responses[incomingText]);
             } else {
-                await sendMessage(remoteJid, "No entendí tu opción. Por favor elige un número del 1 al 9 o escribe 'menú' para ver las opciones.");
+                await sendMessage(remoteJid, "No entendí tu opción. Por favor elige un número del 1 al 10 o escribe 'menú' para ver las opciones.");
             }
         }
     }
