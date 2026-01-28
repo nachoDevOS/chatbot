@@ -88,16 +88,16 @@ app.post('/webhook', async (req, res) => {
         console.log(`Mensaje recibido de ${remoteJid}: ${incomingText}`);
 
         const menuText = `
-1️⃣ *¿Quién es Alejandro Unzueta?*
-2️⃣ *Propuestas*
-3️⃣ *Logros*
-4️⃣ *Desarrollo Económico Productivo*
-5️⃣ *Equilibrio Medioambiental*
-6️⃣ *Bienestar Social*
-7️⃣ *Salud para Todos*
-8️⃣ *¿Qué es la Alianza Despierta?*
-9️⃣ *¿Cuál es la visión del plan?*
-🔟 Hablar con un representante`;
+1️⃣ 👤 *¿Quién es Alejandro Unzueta?*
+2️⃣ 📋 *Propuestas*
+3️⃣ 🏆 *Logros*
+4️⃣ 🏭 *Desarrollo Económico Productivo*
+5️⃣ 🌳 *Equilibrio Medioambiental*
+6️⃣ 👨‍👩‍👧‍👦 *Bienestar Social*
+7️⃣ 🏥 *Salud para Todos*
+8️⃣ 🤝 *¿Qué es la Alianza Despierta?*
+9️⃣ 🔭 *¿Cuál es la visión del plan?*
+🔟 📞 *Hablar con un representante*`;
 
         const responses = {
             '1': "👤 *Alejandro Unzueta* es un líder beniano reconocido por su trabajo social y su compromiso con la salud y el bienestar de las familias. ❤️🏥\n\n🦠 Se hizo conocido por su apoyo directo a la población durante la pandemia del COVID-19, brindando asistencia médica, medicamentos y acompañamiento a miles de personas. 💊🤝\n\n🌟 Su visión es construir un Beni productivo, moderno, seguro y conectado, donde todas las comunidades tengan acceso a oportunidades, desarrollo y salud de calidad. 🚜🏗️",
