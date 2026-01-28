@@ -1,5 +1,7 @@
 const express = require('express');
 const axios = require('axios');
+const fs = require('fs');
+const path = require('path');
 const app = express();
 app.use(express.json());
 
@@ -8,8 +10,25 @@ const API_KEY = 'B384826D919F-4B0A-A2D3-33949BE4D446';
 const BASE_URL = 'http://evo-is8804884wggw00wckcg880o.190.129.54.198.sslip.io';
 const INSTANCE = 'boot-alejandro';
 
-// Base de datos en memoria para controlar el flujo de la conversación
-const userSessions = {};
+// Configuración de la Base de Datos (Archivo JSON)
+const DB_PATH = path.join(__dirname, 'database.json');
+
+// Función para leer las sesiones guardadas
+function getSessions() {
+    if (!fs.existsSync(DB_PATH)) return {};
+    try {
+        return JSON.parse(fs.readFileSync(DB_PATH, 'utf8'));
+    } catch (error) {
+        return {};
+    }
+}
+
+// Función para guardar una sesión nueva
+function saveSession(remoteJid, data) {
+    const sessions = getSessions();
+    sessions[remoteJid] = data;
+    fs.writeFileSync(DB_PATH, JSON.stringify(sessions, null, 2));
+}
 
 // Función para enviar respuesta
 async function sendMessage(remoteJid, text) {
@@ -68,11 +87,13 @@ app.post('/webhook', async (req, res) => {
         };
 
         // 2. Lógica del Chatbot
+        const sessions = getSessions(); // Leemos la base de datos
+
         // Verificamos si el usuario ya tiene una sesión iniciada
-        if (!userSessions[remoteJid]) {
+        if (!sessions[remoteJid]) {
             // Si es nuevo (o reinició), enviamos la presentación y el menú obligatoriamente
             await sendMessage(remoteJid, `👋 ¡Hola ${pushName}! Soy el Asistente Virtual del Dr. Alejandro Unzueta.\nEstoy aquí para responder tus preguntas y contarte más sobre su trayectoria y su visión para el Beni.\n\nEscribe el número de la opción que deseas consultar:\n${menuText}`);
-            userSessions[remoteJid] = { step: 'MAIN_MENU' };
+            saveSession(remoteJid, { step: 'MAIN_MENU' }); // Guardamos en el archivo
         } else {
             // Si ya existe, procesamos su respuesta
             if (incomingText.includes('hola') || incomingText.includes('buen') || incomingText.includes('menu')) {
