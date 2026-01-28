@@ -1,9 +1,18 @@
 {
   "59167285914@s.whatsapp.net": {
-    "step": "MAIN_MENU",
-    "pausedUntil": 1769627894140
+    "step": "MAIN_MENU"
   },
   "59162933677@s.whatsapp.net": {
     "step": "MAIN_MENU"
+  },
+  "59167662833@s.whatsapp.net": {
+    "step": "MAIN_MENU"
+  },
+  "59175014442@s.whatsapp.net": {
+    "step": "MAIN_MENU"
+  },
+  "59175891900@s.whatsapp.net": {
+    "step": "MAIN_MENU",
+    "pausedUntil": 1769628960464
   }
 }

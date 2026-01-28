@@ -45,6 +45,30 @@ async function sendMessage(remoteJid, text) {
     }
 }
 
+// Función para enviar medios (imágenes)
+async function sendMedia(remoteJid, filePath, caption) {
+    try {
+        if (!fs.existsSync(filePath)) {
+            console.error('Archivo no encontrado:', filePath);
+            await sendMessage(remoteJid, caption); // Fallback a texto si no hay imagen
+            return;
+        }
+        const fileData = fs.readFileSync(filePath, { encoding: 'base64' });
+        await axios.post(`${BASE_URL}/message/sendMedia/${INSTANCE}`, {
+            number: remoteJid,
+            media: fileData,
+            mediatype: "image",
+            caption: caption
+        }, {
+            headers: { 'apikey': API_KEY, 'Content-Type': 'application/json' }
+        });
+        console.log(`Imagen enviada a: ${remoteJid}`);
+    } catch (error) {
+        console.error('Error enviando imagen:', error.response?.data || error.message);
+        await sendMessage(remoteJid, caption); // Fallback a texto si falla
+    }
+}
+
 // Endpoint para el Webhook
 app.post('/webhook', async (req, res) => {
     const payload = req.body;
@@ -110,6 +134,9 @@ app.post('/webhook', async (req, res) => {
             // Si ya existe, procesamos su respuesta
             if (incomingText.includes('hola') || incomingText.includes('buen') || incomingText.includes('menu')) {
                 await sendMessage(remoteJid, `👋 ¡Hola de nuevo ${pushName}! Aquí tienes las opciones:\n${menuText}`);
+            } else if (incomingText === '1') {
+                const imagePath = path.join(__dirname, 'image', 'alejandro.jpg');
+                await sendMedia(remoteJid, imagePath, responses['1']);
             } else if (responses[incomingText]) {
                 await sendMessage(remoteJid, responses[incomingText]);
                 // Si elige hablar con representante (10), pausamos el bot por 10 minutos
