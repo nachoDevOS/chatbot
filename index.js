@@ -88,15 +88,15 @@ app.post('/webhook', async (req, res) => {
         console.log(`Mensaje recibido de ${remoteJid}: ${incomingText}`);
 
         const menuText = `
-1️⃣ ¿Quién es Alejandro Unzueta?
-2️⃣ Propuestas
-3️⃣ Logros
-4️⃣ Desarrollo Económico Productivo
-5️⃣ Equilibrio Medioambiental
-6️⃣ Bienestar Social
-7️⃣ Salud para Todos
-8️⃣ ¿Qué es la Alianza Despierta?
-9️⃣ ¿Cuál es la visión del plan?
+1️⃣ *¿Quién es Alejandro Unzueta?*
+2️⃣ *Propuestas*
+3️⃣ *Logros*
+4️⃣ *Desarrollo Económico Productivo*
+5️⃣ *Equilibrio Medioambiental*
+6️⃣ *Bienestar Social*
+7️⃣ *Salud para Todos*
+8️⃣ *¿Qué es la Alianza Despierta?*
+9️⃣ *¿Cuál es la visión del plan?*
 🔟 Hablar con un representante`;
 
         const responses = {
