@@ -128,12 +128,12 @@ app.post('/webhook', async (req, res) => {
         // Verificamos si el usuario ya tiene una sesión iniciada
         if (!sessions[remoteJid]) {
             // Si es nuevo (o reinició), enviamos la presentación y el menú obligatoriamente
-            await sendMessage(remoteJid, `👋 ¡Hola ${pushName}! Soy el Asistente Virtual del Dr. Alejandro Unzueta.\nEstoy aquí para responder tus preguntas y contarte más sobre su trayectoria y su visión para el Beni.\n\nEscribe el número de la opción que deseas consultar:\n${menuText}`);
+            await sendMessage(remoteJid, `👋 ¡Hola *${pushName}*! Soy el Asistente Virtual del Dr. Alejandro Unzueta.\nEstoy aquí para responder tus preguntas y contarte más sobre su trayectoria y su visión para el Beni.\n\nEscribe el número de la opción que deseas consultar:\n${menuText}`);
             saveSession(remoteJid, { step: 'MAIN_MENU' }); // Guardamos en el archivo
         } else {
             // Si ya existe, procesamos su respuesta
             if (incomingText.includes('hola') || incomingText.includes('buen') || incomingText.includes('menu')) {
-                await sendMessage(remoteJid, `👋 ¡Hola de nuevo ${pushName}! Aquí tienes las opciones:\n${menuText}`);
+                await sendMessage(remoteJid, `👋 ¡Hola de nuevo *${pushName}*! Aquí tienes las opciones:\n${menuText}`);
             } else if (incomingText === '1') {
                 const imagePath = path.join(__dirname, 'image', 'alejandro.jpeg');
                 await sendMedia(remoteJid, imagePath, responses['1']);
