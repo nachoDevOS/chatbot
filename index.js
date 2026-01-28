@@ -35,6 +35,7 @@ app.post('/webhook', async (req, res) => {
         if (messageData.key.fromMe) return res.sendStatus(200);
 
         const remoteJid = messageData.key.remoteJid;
+        const pushName = messageData.pushName || '';
         const incomingText = (messageData.message?.conversation || 
                              messageData.message?.extendedTextMessage?.text || "").toLowerCase();
 
@@ -42,7 +43,7 @@ app.post('/webhook', async (req, res) => {
 
         // 2. Lógica del Chatbot
         if (incomingText.includes('hola') || incomingText.includes('buen')) {
-            await sendMessage(remoteJid, "👋 ¡Hola! Soy el Asistente Virtual del Dr. Alejandro Unzueta.\nEstoy aquí para responder tus preguntas y contarte más sobre su trayectoria y su visión para el Beni.");
+            await sendMessage(remoteJid, `👋 ¡Hola ${pushName}! Soy el Asistente Virtual del Dr. Alejandro Unzueta.\nEstoy aquí para responder tus preguntas y contarte más sobre su trayectoria y su visión para el Beni.`);
         } else if (incomingText.includes('precio')) {
             await sendMessage(remoteJid, "Nuestros servicios varían según tu necesidad. Dime qué buscas.");
         } else {
