@@ -64,16 +64,16 @@ app.post('/webhook', async (req, res) => {
         console.log(`Mensaje recibido de ${remoteJid}: ${incomingText}`);
 
         const menuText = `
-1️⃣ ¿Quién es Alejandro Unzueta?
-2️⃣ Propuestas
-3️⃣ Logros
-4️⃣ Desarrollo Económico Productivo
-5️⃣ Equilibrio Medioambiental
-6️⃣ Bienestar Social
-7️⃣ Salud para Todos
-8️⃣ ¿Qué es la Alianza Despierta?
-9️⃣ ¿Cuál es la visión del plan?
-🔟 Hablar con un representante`;
+        1️⃣ ¿Quién es Alejandro Unzueta?
+        2️⃣ Propuestas
+        3️⃣ Logros
+        4️⃣ Desarrollo Económico Productivo
+        5️⃣ Equilibrio Medioambiental
+        6️⃣ Bienestar Social
+        7️⃣ Salud para Todos
+        8️⃣ ¿Qué es la Alianza Despierta?
+        9️⃣ ¿Cuál es la visión del plan?
+        🔟 Hablar con un representante`;
 
         const responses = {
             '1': "Alejandro Unzueta es un líder beniano reconocido por su trabajo social y su compromiso con la salud y el bienestar de las familias. Se hizo conocido por su apoyo directo a la población durante la pandemia del COVID-19, brindando asistencia médica, medicamentos y acompañamiento a miles de personas.\nSu visión es construir un Beni productivo, moderno, seguro y conectado, donde todas las comunidades tengan acceso a oportunidades, desarrollo y salud de calidad.",
@@ -91,6 +91,16 @@ app.post('/webhook', async (req, res) => {
         // 2. Lógica del Chatbot
         const sessions = getSessions(); // Leemos la base de datos
 
+        // Verificar si el bot está en pausa (esperando representante)
+        if (sessions[remoteJid]?.pausedUntil) {
+            if (Date.now() < sessions[remoteJid].pausedUntil) {
+                return res.sendStatus(200); // El bot está en silencio, no hace nada
+            }
+            // Si ya pasaron los 10 minutos, reactivamos el bot borrando la pausa
+            delete sessions[remoteJid].pausedUntil;
+            saveSession(remoteJid, sessions[remoteJid]);
+        }
+
         // Verificamos si el usuario ya tiene una sesión iniciada
         if (!sessions[remoteJid]) {
             // Si es nuevo (o reinició), enviamos la presentación y el menú obligatoriamente
@@ -102,6 +112,11 @@ app.post('/webhook', async (req, res) => {
                 await sendMessage(remoteJid, `👋 ¡Hola de nuevo ${pushName}! Aquí tienes las opciones:\n${menuText}`);
             } else if (responses[incomingText]) {
                 await sendMessage(remoteJid, responses[incomingText]);
+                // Si elige hablar con representante (10), pausamos el bot por 10 minutos
+                if (incomingText === '10') {
+                    sessions[remoteJid].pausedUntil = Date.now() + 10 * 60 * 1000; // 10 minutos en milisegundos
+                    saveSession(remoteJid, sessions[remoteJid]);
+                }
             } else {
                 await sendMessage(remoteJid, "No entendí tu opción. Por favor elige un número del 1 al 10 o escribe 'menú' para ver las opciones.");
             }
