@@ -36,16 +36,34 @@ function saveSession(remoteJid, data) {
 // Función para enviar respuesta
 async function sendMessage(remoteJid, text) {
     try {
-        // 1. Simular que está escribiendo
+        // 1. Primer "Escribiendo..." (1.5s)
+        await axios.post(`${BASE_URL}/chat/sendPresence/${INSTANCE}`, {
+            number: remoteJid,
+            presence: "composing",
+            delay: 1500
+        }, { headers: { 'apikey': API_KEY, 'Content-Type': 'application/json' } })
+        .catch(e => console.log('Error presence 1:', e.message));
+
+        await delay(1500);
+
+        // 2. Parar de escribir (Pausa de 1s)
+        await axios.post(`${BASE_URL}/chat/sendPresence/${INSTANCE}`, {
+            number: remoteJid,
+            presence: "paused"
+        }, { headers: { 'apikey': API_KEY, 'Content-Type': 'application/json' } })
+        .catch(e => console.log('Error presence 2:', e.message));
+
+        await delay(1000);
+
+        // 3. Segundo "Escribiendo..." (2s)
         await axios.post(`${BASE_URL}/chat/sendPresence/${INSTANCE}`, {
             number: remoteJid,
             presence: "composing",
             delay: 2000
         }, { headers: { 'apikey': API_KEY, 'Content-Type': 'application/json' } })
-        .catch(e => console.log('Error presence:', e.message));
+        .catch(e => console.log('Error presence 3:', e.message));
 
-        // 2. Esperar entre 2 y 3 segundos para parecer humano
-        await delay(Math.floor(Math.random() * 1000) + 2000);
+        await delay(2000);
 
         await axios.post(`${BASE_URL}/message/sendText/${INSTANCE}`, {
             number: remoteJid, // Evolution API acepta el JID directamente
@@ -68,16 +86,34 @@ async function sendMedia(remoteJid, filePath, caption) {
             return;
         }
 
-        // 1. Simular que está escribiendo (o subiendo imagen)
+        // 1. Primer "Escribiendo..." (1.5s)
+        await axios.post(`${BASE_URL}/chat/sendPresence/${INSTANCE}`, {
+            number: remoteJid,
+            presence: "composing",
+            delay: 1500
+        }, { headers: { 'apikey': API_KEY, 'Content-Type': 'application/json' } })
+        .catch(e => console.log('Error presence 1:', e.message));
+
+        await delay(1500);
+
+        // 2. Parar de escribir (Pausa de 1s)
+        await axios.post(`${BASE_URL}/chat/sendPresence/${INSTANCE}`, {
+            number: remoteJid,
+            presence: "paused"
+        }, { headers: { 'apikey': API_KEY, 'Content-Type': 'application/json' } })
+        .catch(e => console.log('Error presence 2:', e.message));
+
+        await delay(1000);
+
+        // 3. Segundo "Escribiendo..." (2s)
         await axios.post(`${BASE_URL}/chat/sendPresence/${INSTANCE}`, {
             number: remoteJid,
             presence: "composing",
             delay: 2000
         }, { headers: { 'apikey': API_KEY, 'Content-Type': 'application/json' } })
-        .catch(e => console.log('Error presence:', e.message));
+        .catch(e => console.log('Error presence 3:', e.message));
 
-        // 2. Esperar entre 2 y 3 segundos
-        await delay(Math.floor(Math.random() * 1000) + 2000);
+        await delay(2000);
 
         const fileData = fs.readFileSync(filePath, { encoding: 'base64' });
         await axios.post(`${BASE_URL}/message/sendMedia/${INSTANCE}`, {
