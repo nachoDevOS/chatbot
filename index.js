@@ -36,32 +36,13 @@ function saveSession(remoteJid, data) {
 // Función para enviar respuesta
 async function sendMessage(remoteJid, text) {
     try {
-        // 1. Primer "Escribiendo..." (1.5s)
-        await axios.post(`${BASE_URL}/chat/sendPresence/${INSTANCE}`, {
-            number: remoteJid,
-            presence: "composing",
-            delay: 1500
-        }, { headers: { 'apikey': API_KEY, 'Content-Type': 'application/json' } })
-        .catch(e => console.log('Error presence 1:', e.message));
-
-        await delay(1500);
-
-        // 2. Parar de escribir (Pausa de 1s)
-        await axios.post(`${BASE_URL}/chat/sendPresence/${INSTANCE}`, {
-            number: remoteJid,
-            presence: "paused"
-        }, { headers: { 'apikey': API_KEY, 'Content-Type': 'application/json' } })
-        .catch(e => console.log('Error presence 2:', e.message));
-
-        await delay(1000);
-
-        // 3. Segundo "Escribiendo..." (2s)
+        // Simular "Escribiendo..." por 2 segundos
         await axios.post(`${BASE_URL}/chat/sendPresence/${INSTANCE}`, {
             number: remoteJid,
             presence: "composing",
             delay: 2000
         }, { headers: { 'apikey': API_KEY, 'Content-Type': 'application/json' } })
-        .catch(e => console.log('Error presence 3:', e.message));
+        .catch(e => console.log('Error presence:', e.message));
 
         await delay(2000);
 
@@ -86,32 +67,13 @@ async function sendMedia(remoteJid, filePath, caption) {
             return;
         }
 
-        // 1. Primer "Escribiendo..." (1.5s)
-        await axios.post(`${BASE_URL}/chat/sendPresence/${INSTANCE}`, {
-            number: remoteJid,
-            presence: "composing",
-            delay: 1500
-        }, { headers: { 'apikey': API_KEY, 'Content-Type': 'application/json' } })
-        .catch(e => console.log('Error presence 1:', e.message));
-
-        await delay(1500);
-
-        // 2. Parar de escribir (Pausa de 1s)
-        await axios.post(`${BASE_URL}/chat/sendPresence/${INSTANCE}`, {
-            number: remoteJid,
-            presence: "paused"
-        }, { headers: { 'apikey': API_KEY, 'Content-Type': 'application/json' } })
-        .catch(e => console.log('Error presence 2:', e.message));
-
-        await delay(1000);
-
-        // 3. Segundo "Escribiendo..." (2s)
+        // Simular "Escribiendo..." por 2 segundos
         await axios.post(`${BASE_URL}/chat/sendPresence/${INSTANCE}`, {
             number: remoteJid,
             presence: "composing",
             delay: 2000
         }, { headers: { 'apikey': API_KEY, 'Content-Type': 'application/json' } })
-        .catch(e => console.log('Error presence 3:', e.message));
+        .catch(e => console.log('Error presence:', e.message));
 
         await delay(2000);
 
