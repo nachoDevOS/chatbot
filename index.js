@@ -13,6 +13,9 @@ const INSTANCE = 'boot-alejandro';
 // Configuración de la Base de Datos (Archivo JSON)
 const DB_PATH = path.join(__dirname, 'database.json');
 
+// Función auxiliar para generar pausas (delay)
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
 // Función para leer las sesiones guardadas
 function getSessions() {
     if (!fs.existsSync(DB_PATH)) return {};
@@ -33,6 +36,17 @@ function saveSession(remoteJid, data) {
 // Función para enviar respuesta
 async function sendMessage(remoteJid, text) {
     try {
+        // 1. Simular que está escribiendo
+        await axios.post(`${BASE_URL}/chat/sendPresence/${INSTANCE}`, {
+            number: remoteJid,
+            presence: "composing",
+            delay: 2000
+        }, { headers: { 'apikey': API_KEY, 'Content-Type': 'application/json' } })
+        .catch(e => console.log('Error presence:', e.message));
+
+        // 2. Esperar entre 2 y 3 segundos para parecer humano
+        await delay(Math.floor(Math.random() * 1000) + 2000);
+
         await axios.post(`${BASE_URL}/message/sendText/${INSTANCE}`, {
             number: remoteJid, // Evolution API acepta el JID directamente
             text: text
@@ -53,6 +67,18 @@ async function sendMedia(remoteJid, filePath, caption) {
             await sendMessage(remoteJid, caption); // Fallback a texto si no hay imagen
             return;
         }
+
+        // 1. Simular que está escribiendo (o subiendo imagen)
+        await axios.post(`${BASE_URL}/chat/sendPresence/${INSTANCE}`, {
+            number: remoteJid,
+            presence: "composing",
+            delay: 2000
+        }, { headers: { 'apikey': API_KEY, 'Content-Type': 'application/json' } })
+        .catch(e => console.log('Error presence:', e.message));
+
+        // 2. Esperar entre 2 y 3 segundos
+        await delay(Math.floor(Math.random() * 1000) + 2000);
+
         const fileData = fs.readFileSync(filePath, { encoding: 'base64' });
         await axios.post(`${BASE_URL}/message/sendMedia/${INSTANCE}`, {
             number: remoteJid,
