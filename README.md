@@ -57,8 +57,9 @@ Para mantener el bot activo 24/7, se recomienda usar **PM2**:
 
 ```bash
 npm install -g pm2
-pm2 start index.js --name "chatbot-alejandro"
+pm2 start index.js --name "chatbot-alejandro" -- run start
 pm2 save
+pm2 startup
 ```
 
 ## 📂 Estructura de Datos
