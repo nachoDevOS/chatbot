@@ -36,15 +36,15 @@ function saveSession(remoteJid, data) {
 // Función para enviar respuesta
 async function sendMessage(remoteJid, text) {
     try {
-        // Simular "Escribiendo..." por 2 segundos
+        // Simular "Escribiendo..." por 1 segundo
         await axios.post(`${BASE_URL}/chat/sendPresence/${INSTANCE}`, {
             number: remoteJid,
             presence: "composing",
-            delay: 2000
+            delay: 1000
         }, { headers: { 'apikey': API_KEY, 'Content-Type': 'application/json' } })
         .catch(e => console.log('Error presence:', e.message));
 
-        await delay(2000);
+        await delay(1000);
 
         await axios.post(`${BASE_URL}/message/sendText/${INSTANCE}`, {
             number: remoteJid, // Evolution API acepta el JID directamente
@@ -67,15 +67,15 @@ async function sendMedia(remoteJid, filePath, caption) {
             return;
         }
 
-        // Simular "Escribiendo..." por 2 segundos
+        // Simular "Escribiendo..." por 1 segundo
         await axios.post(`${BASE_URL}/chat/sendPresence/${INSTANCE}`, {
             number: remoteJid,
             presence: "composing",
-            delay: 2000
+            delay: 1000
         }, { headers: { 'apikey': API_KEY, 'Content-Type': 'application/json' } })
         .catch(e => console.log('Error presence:', e.message));
 
-        await delay(2000);
+        await delay(1000);
 
         const fileData = fs.readFileSync(filePath, { encoding: 'base64' });
         await axios.post(`${BASE_URL}/message/sendMedia/${INSTANCE}`, {
